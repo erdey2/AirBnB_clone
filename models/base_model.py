@@ -11,7 +11,7 @@ class BaseModel:
         self.id = str(uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-    
+
     def __str__(self):
         """print the string representation of the object."""
         return "{}".format(self.__dict__)
@@ -19,7 +19,7 @@ class BaseModel:
     def save(self):
         """update the date and time."""
         self.updated_at = datetime.now()
-    
+
     def to_dict(self):
         """Returns the dictionary representation of the object."""
         rdict = self.__dict__.copy()
