@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """the BaseModel module."""
+import models
 from uuid import uuid4
 from datetime import datetime
 
@@ -18,6 +19,8 @@ class BaseModel:
                     self.__dict__[key] = datetime.strptime(value, tformat)
                 else:
                     self.__dict__[key] = value
+        else:
+            models.storage.new(self)
 
     def __str__(self):
         """print the string representation of the object."""
@@ -26,6 +29,7 @@ class BaseModel:
     def save(self):
         """update the date and time."""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Returns the dictionary representation of the object."""
