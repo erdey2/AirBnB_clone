@@ -2,6 +2,8 @@
 """AirBnB command line module."""
 from cmd import Cmd
 import sys
+import re
+from shlex import split
 import json
 import os
 from models import storage
@@ -12,6 +14,24 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
+
+def parse(arg):
+    curly_braces = re.search(r"\{(.*?)\}", arg)
+    brackets = re.search(r"\[(.*?)\]", arg)
+    if curly_braces is None:
+        if brackets is None:
+            return [i.strip(",") for i in split(arg)]
+        else:
+            lexer = split(arg[:brackets.span()[0]])
+            retl = [i.strip(",") for i in lexer]
+            retl.append(brackets.group())
+            return retl
+    else:
+        lexer = split(arg[:curly_braces.span()[0]])
+        retl = [i.strip(",") for i in lexer]
+        retl.append(curly_braces.group())
+        return retl
 
 
 class HBNBCommand(Cmd):
@@ -99,6 +119,16 @@ class HBNBCommand(Cmd):
             print("** class doesn't exist **")
         else:
             print([str(a) for b, a in storage.all().items() if arg in b])
+
+    def do_count(self, arg):
+        """Usage: count <class> or <class>.count()
+        count the total number of instances."""
+        larg = parse(arg)
+        count = 0
+        for i in storage.all().values():
+            if larg[0] == i.__class__.__name__:
+                count += 1
+        print(count)
 
     def do_update(self, arg):
         """update JSON file."""
