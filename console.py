@@ -1,25 +1,38 @@
 #!/usr/bin/python3
 """AirBnB command line module."""
 from cmd import Cmd
+import sys
+import json
+import os
+from models import storage
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.review import Review
 
 
 class HBNBCommand(Cmd):
     """Command line imp class."""
     prompt = '(hbnb) '
+    classes = {'BaseModel': BaseModel, 'User': User, 'City': City,
+               'Place': Place, 'Review': Review,
+               'State': State}
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
-    
+
     def do_EOF(self, arg):
         """implement EOF."""
         print('')
         return True
-    
+
     def emptyline(self):
         """privent execution."""
         pass
-    
+
     def do_create(self, arg):
         """create a new object."""
         if len(arg) == 0:
@@ -53,7 +66,7 @@ class HBNBCommand(Cmd):
                 print("** no instance found **")
         else:
             print("** instance id missing **")
-    
+
     def do_destroy(self, arg):
         """delete instance with class and id """
         if len(arg) == 0:
@@ -114,6 +127,7 @@ class HBNBCommand(Cmd):
                     print('** attribute name missing **')
             else:
                 print('** no instance found **')
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
