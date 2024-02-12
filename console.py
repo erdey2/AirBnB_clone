@@ -38,7 +38,7 @@ class HBNBCommand(Cmd):
     """Command line imp class."""
     prompt = '(hbnb) '
     classes = {'BaseModel': BaseModel, 'User': User, 'City': City,
-            'Place': Place, 'Amenity': Amenity, 'Review': Review,
+               'Place': Place, 'Amenity': Amenity, 'Review': Review,
                'State': State}
 
     def do_quit(self, arg):
