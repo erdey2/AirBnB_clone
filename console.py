@@ -38,7 +38,7 @@ class HBNBCommand(Cmd):
     """Command line imp class."""
     prompt = '(hbnb) '
     classes = {'BaseModel': BaseModel, 'User': User, 'City': City,
-               'Place': Place, 'Review': Review,
+            'Place': Place, 'Amenity': Amenity, 'Review': Review,
                'State': State}
 
     def do_quit(self, arg):
@@ -120,13 +120,28 @@ class HBNBCommand(Cmd):
         else:
             print([str(a) for b, a in storage.all().items() if arg in b])
 
+    def do_all(self, arg):
+        """Usage: <class>.all()
+        Display string representations of all instances of a given class."""
+        larg = parse(arg)
+        if len(larg) > 0 and larg[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        else:
+            lobj = []
+            for obj in storage.all().values():
+                if len(larg) > 0 and larg[0] == obj.__class__.__name__:
+                    lobj.append(obj.__str__())
+                elif len(larg) == 0:
+                    lobj.append(obj.__str__())
+            print(lobj)
+
     def do_count(self, arg):
         """Usage: count <class> or <class>.count()
         count the total number of instances."""
         larg = parse(arg)
         count = 0
         for i in storage.all().values():
-            if larg[0] == i.__class__.__name__:
+            if larg[1] == i.__class__.__name__:
                 count += 1
         print(count)
 
